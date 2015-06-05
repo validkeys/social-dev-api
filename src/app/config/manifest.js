@@ -23,6 +23,7 @@ export default {
     "hapi-auth-jwt":            null,
     "./initializers/database":  null,
     './initializers/authentication': null,
+    './initializers/pod-policies': null,
     "./models/user":            null,
     "./models/post":            null,
     "./pods/sessions":          null,

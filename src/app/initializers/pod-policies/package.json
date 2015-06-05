@@ -1,0 +1,5 @@
+{
+  "name": "PodPolicyAutoLoader",
+  "version": "1.0.0",
+  "description": "Autoloads the policies for pods"
+}
