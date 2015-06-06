@@ -78,3 +78,8 @@ register.attributes = {
 
 
 export { attributes, User, register };
+
+import { Post } from '../post';
+
+// // Relationships
+// User.hasMany(Post, "posts", "id", "userId");

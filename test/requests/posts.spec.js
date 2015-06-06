@@ -8,7 +8,7 @@ import moment from 'moment';
 import Promise from 'bluebird';
     
 // shortcuts
-var lab     = Lab.script(),
+let lab     = Lab.script(),
 beforeEach  = lab.beforeEach,
 before      = lab.before,
 after       = lab.after,
@@ -49,10 +49,48 @@ lab.experiment('Posts', function() {
 
   lab.experiment('Creating posts', function(){
 
+    let currentUser, currentUserHeaders;
+
+    beforeEach((done) => {
+      Factory.create('user', (err, user) => {
+        if (err) console.log(err);
+        currentUser         = user;
+        currentUserHeaders  = Helpers.Auth.headers(currentUser);
+        done();
+      });
+    });
+
     lab.test('The endpoint should exist', function(done) {
-      var options = { method: "POST", url: "/posts" };
+      let options = { method: "POST", url: "/posts" };
       server.inject(options, function(response) {
         expect(response.statusCode).to.not.equal(404);
+        done();
+      });
+    });
+
+    lab.test('I should have to be logged in', function(done) {
+      let options = { method: "POST", url: "/posts" };
+      server.inject(options, (response) => {
+        expect(response.statusCode).to.equal(401);
+        done();
+      }); 
+    });
+
+    lab.test('payload should have to contain a post key', function(done) {
+      let options = { method: "POST", url: "/posts", headers: currentUserHeaders };
+      server.inject(options, function(response) {
+        expect(response.statusCode).to.equal(400);
+        expect('error' in response.result).to.be.true;
+        expect(response.result.message).to.contain("\"post\" is required");
+        done();
+      });
+    });
+
+    lab.test('I should be able to create a new post', function(done) {
+      let options = { method: "POST", url: "/posts", headers: currentUserHeaders };
+      server.inject(options, (response) => {
+        expect(response.statusCode).to.equal(200);
+        expect("post" in response.result);
         done();
       });
     });

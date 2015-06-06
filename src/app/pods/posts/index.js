@@ -12,8 +12,16 @@ let index = (server, next) => {
     {
       method: "POST",
       path:   root,
-      handler: function(req, reply, next) {
-        reply("HERE");
+      config: {
+        handler: function(req, reply, next) {
+          reply("HERE");
+        },
+        auth: 'token',
+        validate: {
+          payload: {
+            post: Joi.object().required()
+          }
+        }
       }
     }
 

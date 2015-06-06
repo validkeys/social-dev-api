@@ -3,6 +3,7 @@ import _ from 'lodash';
 import Boom from 'boom';
 import Promise from 'bluebird';
 import moment from 'moment';
+// import { User } from '../';
 
 let type    = thinky.type;
 let Post    = null;
@@ -50,3 +51,6 @@ register.attributes = {
 
 
 export { attributes, Post, register };
+
+// Relationships
+// Post.belongsTo(User, "user", "userId", "id");
